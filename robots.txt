@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://tsevert-uiowa.github.io/fantasy-football-trade-calculator/sitemap.xml
