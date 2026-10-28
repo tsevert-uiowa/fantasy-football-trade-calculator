@@ -46,13 +46,20 @@
             margin-bottom: 12px;
             text-decoration: none;
         }
-        .logo-img {
+        .logo-emblem {
             width: 45px;
             height: 45px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
             border-radius: 8px;
-            object-fit: cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             border: 2px solid #fbd38d;
             box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+        .logo-emblem svg {
+            width: 28px;
+            height: 28px;
         }
         .logo {
             font-size: 1.8rem;
@@ -282,7 +289,17 @@
     <header>
         <div class="header-container">
             <a href="index.html" class="brand-wrapper">
-                <img src="watermarked_img_14871399255590134023.jpg" alt="Gridiron Ledger Logo" class="logo-img">
+                <div class="logo-emblem">
+                    <!-- Shield & Football Logo Graphic -->
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L4 5V11C4 16.55 7.41 21.74 12 23C16.59 21.74 20 16.55 20 11V5L12 2Z" fill="#1e3a8a" stroke="#fbd38d" stroke-width="1.5"/>
+                        <ellipse cx="12" cy="12" rx="6" ry="3.5" transform="rotate(-25 12 12)" fill="#8b5cf6" stroke="#ffffff" stroke-width="1"/>
+                        <path d="M9.5 9.8L14.5 12.2" stroke="#ffffff" stroke-width="1" stroke-linecap="round"/>
+                        <path d="M10.7 8.9L11.5 11.2" stroke="#ffffff" stroke-width="0.8"/>
+                        <path d="M12.3 9.7L13.1 12" stroke="#ffffff" stroke-width="0.8"/>
+                        <path d="M13.9 10.5L14.7 12.8" stroke="#ffffff" stroke-width="0.8"/>
+                    </svg>
+                </div>
                 <span class="logo">Gridiron Ledger</span>
             </a>
             <nav>
