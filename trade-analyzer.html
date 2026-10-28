@@ -138,6 +138,7 @@
         }
         .analyze-btn-container {
             text-align: center;
+            margin-top: 15px;
         }
         .analyze-btn {
             background-color: #dd6b20;
@@ -150,9 +151,14 @@
             cursor: pointer;
             width: 100%;
             max-width: 300px;
+            transition: background-color 0.2s ease;
         }
         .analyze-btn:hover {
             background-color: #c05621;
+        }
+        #tradeResult {
+            margin-top: 25px;
+            transition: all 0.3s ease-in-out;
         }
         .sample-breakdown {
             background-color: #ffffff;
@@ -258,7 +264,7 @@
                             <option value="95">Ja'Marr Chase (CIN - WR) - Value: 95</option>
                             <option value="94">Breece Hall (NYJ - RB) - Value: 94</option>
                             <option value="93">Bijan Robinson (ATL - RB) - Value: 93</option>
-                            <option value="92">Amon-Ra St. Brown (DET - WR) - Value: 92</option>
+                            <option value="92" selected>Amon-Ra St. Brown (DET - WR) - Value: 92</option>
                             <option value="91">Josh Allen (BUF - QB) - Value: 91</option>
                             <option value="90">Jahmyr Gibbs (DET - RB) - Value: 90</option>
                             <option value="89">Saquon Barkley (PHI - RB) - Value: 89</option>
@@ -357,7 +363,7 @@
                         <select id="player2a">
                             <option value="0">-- None --</option>
                             <option value="42">George Pickens (PIT - WR) - Value: 42</option>
-                            <option value="33">Jaylen Warren (PIT - RB) - Value: 33</option>
+                            <option value="33" selected>Jaylen Warren (PIT - RB) - Value: 33</option>
                             <option value="28">Dallas Goedert (PHI - TE) - Value: 28</option>
                             <option value="20">Courtland Sutton (DEN - WR) - Value: 20</option>
                             <option value="18">Xavier Worthy (KC - WR) - Value: 18</option>
@@ -373,11 +379,11 @@
                         <label for="player1b">Select Primary Player:</label>
                         <select id="player1b">
                             <!-- Top 100 Player Database Options -->
+                            <option value="93" selected>Bijan Robinson (ATL - RB) - Value: 93</option>
                             <option value="96">Christian McCaffrey (SF - RB) - Value: 96</option>
                             <option value="99">CeeDee Lamb (WR - DAL) - Value: 99</option>
                             <option value="97">Justin Jefferson (MIN - WR) - Value: 97</option>
                             <option value="95">Ja'Marr Chase (CIN - WR) - Value: 95</option>
-                            <option value="93">Bijan Robinson (ATL - RB) - Value: 93</option>
                             <option value="94">Breece Hall (NYJ - RB) - Value: 94</option>
                             <option value="92">Amon-Ra St. Brown (DET - WR) - Value: 92</option>
                             <option value="90">Jahmyr Gibbs (DET - RB) - Value: 90</option>
@@ -476,7 +482,7 @@
                     <div class="form-group">
                         <label for="player2b">Select Secondary Player (Optional):</label>
                         <select id="player2b">
-                            <option value="0">-- None --</option>
+                            <option value="0" selected>-- None --</option>
                             <option value="42">George Pickens (PIT - WR) - Value: 42</option>
                             <option value="33">Jaylen Warren (PIT - RB) - Value: 33</option>
                             <option value="31">Cole Kmet (CHI - TE) - Value: 31</option>
@@ -490,8 +496,11 @@
             </div>
 
             <div class="analyze-btn-container">
-                <button class="analyze-btn" onclick="alert('Trade Evaluation Calculation Complete: Net Value Differential calculated successfully based on Rest-Of-Season projections. Recommendation: FAIR TRADE.')">Calculate Trade Fairness</button>
+                <button class="analyze-btn" onclick="calculateTrade()">Calculate Trade Fairness</button>
             </div>
+
+            <!-- Dynamic Trade Results Container -->
+            <div id="tradeResult" style="display: none;"></div>
         </div>
 
         <div class="sample-breakdown">
@@ -525,6 +534,50 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        function calculateTrade() {
+            const p1a = parseInt(document.getElementById('player1a').value) || 0;
+            const p2a = parseInt(document.getElementById('player2a').value) || 0;
+            const p1b = parseInt(document.getElementById('player1b').value) || 0;
+            const p2b = parseInt(document.getElementById('player2b').value) || 0;
+
+            const totalA = p1a + p2a;
+            const totalB = p1b + p2b;
+            const diff = totalA - totalB;
+
+            const resultBox = document.getElementById('tradeResult');
+            resultBox.style.display = 'block';
+
+            let verdictHTML = '';
+            if (diff > 2) {
+                verdictHTML = `
+                    <div style="background-color: #f0fff4; border-left: 5px solid #38a169; padding: 20px; border-radius: 6px; border: 1px solid #c6f6d5;">
+                        <h3 style="color: #276749; margin-bottom: 8px; font-size: 1.2rem;">Analyzer Verdict: Win for Team A (+${diff} Net Value)</h3>
+                        <p style="color: #2d3748; margin-bottom: 6px;"><strong>Team A Total Value:</strong> ${totalA} pts &nbsp;|&nbsp; <strong>Team B Total Value:</strong> ${totalB} pts</p>
+                        <p style="color: #2d3748;"><strong>Recommendation:</strong> Accept trade. Team A gains superior rest-of-season value based on our algorithmic model.</p>
+                    </div>`;
+            } else if (diff < -2) {
+                const absDiff = Math.abs(diff);
+                verdictHTML = `
+                    <div style="background-color: #fff5f5; border-left: 5px solid #e53e3e; padding: 20px; border-radius: 6px; border: 1px solid #fed7d7;">
+                        <h3 style="color: #9b2c2c; margin-bottom: 8px; font-size: 1.2rem;">Analyzer Verdict: Win for Team B (+${absDiff} Net Value)</h3>
+                        <p style="color: #2d3748; margin-bottom: 6px;"><strong>Team A Total Value:</strong> ${totalA} pts &nbsp;|&nbsp; <strong>Team B Total Value:</strong> ${totalB} pts</p>
+                        <p style="color: #2d3748;"><strong>Recommendation:</strong> Reject trade. Team B is receiving significantly more value in this exchange.</p>
+                    </div>`;
+            } else {
+                verdictHTML = `
+                    <div style="background-color: #ebf8ff; border-left: 5px solid #3182ce; padding: 20px; border-radius: 6px; border: 1px solid #bee3f8;">
+                        <h3 style="color: #2b6cb0; margin-bottom: 8px; font-size: 1.2rem;">Analyzer Verdict: Perfectly Even / Fair Trade</h3>
+                        <p style="color: #2d3748; margin-bottom: 6px;"><strong>Team A Total Value:</strong> ${totalA} pts &nbsp;|&nbsp; <strong>Team B Total Value:</strong> ${totalB} pts (Difference: ${diff} pt)</p>
+                        <p style="color: #2d3748;"><strong>Recommendation:</strong> Fair trade! Accept or reject based on individual team positional needs.</p>
+                    </div>`;
+            }
+
+            resultBox.innerHTML = verdictHTML;
+            resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    </script>
 
 </body>
 </html>
