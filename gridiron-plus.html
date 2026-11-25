@@ -119,6 +119,29 @@
             margin: 0 auto;
             color: #e2e8f0;
         }
+        /* A/B Test Switcher Tabs */
+        .ab-switch-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .ab-tab-btn {
+            background-color: #e2e8f0;
+            color: #4a5568;
+            border: none;
+            padding: 10px 22px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .ab-tab-btn.active-tab {
+            background-color: #1e3a8a;
+            color: #ffffff;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
         .pricing-section {
             display: flex;
             justify-content: center;
@@ -134,6 +157,10 @@
             padding: 35px;
             text-align: center;
             position: relative;
+            display: none;
+        }
+        .pricing-card.active-card {
+            display: block;
         }
         .badge-tag {
             position: absolute;
@@ -306,8 +333,34 @@
             <p>Unlock advanced analytics, high-stakes trade breakdowns, and real-time expert opinion models designed to give you an unfair competitive advantage in your fantasy football league.</p>
         </section>
 
+        <!-- A/B Test Variant Switcher Tabs -->
+        <div class="ab-switch-container">
+            <button class="ab-tab-btn active-tab" onclick="switchTest('testA', event)">Test A (Flat Season Pass)</button>
+            <button class="ab-tab-btn" onclick="switchTest('testB', event)">Test B (Monthly Subscription)</button>
+        </div>
+
         <section class="pricing-section">
-            <div class="pricing-card">
+            <!-- Test A Card -->
+            <div id="testA" class="pricing-card active-card">
+                <div class="badge-tag">Test A - Flat Season Pass</div>
+                <h2>Season-Long Insider Access</h2>
+                <p class="subtitle">Complete, unrestricted access to all proprietary expert rankings and trade models through the final championship week.</p>
+                
+                <div class="price-tag">$9.99 <span>/ full season</span></div>
+                
+                <ul class="features-list">
+                    <li>Proprietary Expected Points Added (EPA) trade calculators</li>
+                    <li>Advanced target share and red-zone snap regression reports</li>
+                    <li>Priority waiver wire FAAB bidding recommendations</li>
+                    <li>Direct weekly expert matchup analysis breakdown</li>
+                    <li>Zero ads and lightning-fast algorithmic updates</li>
+                </ul>
+
+                <a href="#" class="cta-btn" onclick="alert('Thank you for your interest! As a fictional educational project for MKTG:4400, no actual charges or transactions are processed.')">Unlock Gridiron Plus Now</a>
+            </div>
+
+            <!-- Test B Card -->
+            <div id="testB" class="pricing-card">
                 <div class="badge-tag">Test B - Monthly Subscription Pass</div>
                 <h2>Monthly Insider Subscription</h2>
                 <p class="subtitle">Flexible monthly access to all proprietary expert rankings and trade models until the end of the NFL season.</p>
@@ -353,6 +406,24 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        function switchTest(testId, event) {
+            // Hide all pricing cards
+            document.getElementById('testA').classList.remove('active-card');
+            document.getElementById('testB').classList.remove('active-card');
+            
+            // Show selected card
+            document.getElementById(testId).classList.add('active-card');
+
+            // Remove active style from all buttons
+            const buttons = document.querySelectorAll('.ab-tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active-tab'));
+
+            // Highlight clicked button
+            event.currentTarget.classList.add('active-tab');
+        }
+    </script>
 
 </body>
 </html>
